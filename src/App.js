@@ -1,26 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import Home from './pages/Home'
+import { ThemeProvider } from 'styled-components'
+import ThemeContext from './contexts/Theme'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const lightTheme = {
+    background: '#dcdcdc',
+    backgroundAlt: '#fdfdfd',
+    text: '#333',
+    border: '#dcdcdc',
+    shadow: '0 0 5px rgba(0, 0, 0, .5)',
+}
+
+const darkTheme = {
+    background: '#595959',
+    backgroundAlt: '#333',
+    text: '#f2f2f2',
+    border: '#f2f2f2',
+    shadow: '0 0 5px rgba(255, 255, 255, .75)',
+}
+
+const App = () => {
+    const [theme, updateTheme] = useState(lightTheme)
+
+    const handleSwitchTheme = () => {
+        updateTheme(oldTheme => {
+            if (oldTheme.background === '#595959') {
+                return lightTheme
+            }
+            return darkTheme
+        })
+    }
+
+    return (
+        <ThemeContext.Provider value={{
+            switchTheme: handleSwitchTheme,
+        }}>
+            <ThemeProvider theme={theme}>
+                <Home/>
+            </ThemeProvider>
+        </ThemeContext.Provider>
+    )
 }
 
 export default App;
